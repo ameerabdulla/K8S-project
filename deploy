@@ -1,0 +1,21 @@
+
+aws configure
+
+aws sts get-caller-identity
+
+eksctl create cluster --name cluster1 --region us-east-1 --fargate
+
+aws eks update-kubeconfig --name cluster1 --region us-east-1
+
+eksctl create fargateprofile --name alb-sampleapp --cluster cluster1 --region us-east-1 --namespace game
+
+eksctl utils  associate-iam-oidc-provider --cluster cluster1 --approve
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/examples/2048/2048_full.yaml
+
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
+
+aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
+
+eksctl create iamserviceaccount   --cluster=<cluster name>   --namespace=kube-system   --name=aws-load-balancer-controller   --role-name AmazonEKSLoadBalancerControllerRole   --attach-policy-arn=arn:aws:iam::<aws account id>:policy/AWSLoadBalancerControllerIAMPolicy   --approve
+
