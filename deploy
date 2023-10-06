@@ -7,7 +7,7 @@ eksctl create cluster --name cluster1 --region us-east-1 --fargate
 
 aws eks update-kubeconfig --name cluster1 --region us-east-1
 
-eksctl create fargateprofile --name alb-sampleapp --cluster cluster1 --region us-east-1 --namespace game
+eksctl create fargateprofile --name alb-sampleapp --cluster cluster1 --region us-east-1 --namespace game-2048
 
 eksctl utils  associate-iam-oidc-provider --cluster cluster1 --approve
 
